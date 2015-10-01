@@ -1,4 +1,5 @@
 class Listing < ActiveRecord::Base
+  paginates_per 20
   scope :min_price, -> (min_price) { where("price >= ?", min_price) }
   scope :max_price, -> (max_price) { where("price <= ?", max_price) }
   scope :min_bed, -> (min_bed) { where("bedrooms >= ?", min_bed) }

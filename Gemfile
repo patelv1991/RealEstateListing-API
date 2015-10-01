@@ -13,7 +13,6 @@ gem 'activerecord-import'
 gem 'serialize_json-rails'
 gem 'newrelic_rpm'
 gem 'rgeo-geojson'
-gem 'kaminari'
 
 group :development, :test do
   gem 'annotate'
