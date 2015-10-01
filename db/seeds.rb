@@ -5,3 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+require 'csv'
+
+ActiveRecord::Base.transaction do
+  listings = []
+  CSV.foreach('public/listings.csv', :headers => true) do |row|
+    listings << Listing.new(row.to_hash)
+  end
+  Listing.import listings
+end
