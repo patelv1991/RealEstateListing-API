@@ -12,7 +12,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'activerecord-import'
 gem 'serialize_json-rails'
 gem 'newrelic_rpm'
-gem 'rgeo-geojson'
 
 group :development, :test do
   gem 'annotate'
