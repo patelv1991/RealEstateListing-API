@@ -2,7 +2,6 @@ class ListingsController < ApplicationController
   def index
     @listings = Listing.filter_results(listing_params(params))
     render :index
-    # render json: @listings
   end
 
   private
