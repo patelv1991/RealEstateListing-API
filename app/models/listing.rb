@@ -1,5 +1,4 @@
 class Listing < ActiveRecord::Base
-  paginates_per 20
   scope :min_price, -> (min_price) { where("price >= ?", min_price) }
   scope :max_price, -> (max_price) { where("price <= ?", max_price) }
   scope :min_bed, -> (min_bed) { where("bedrooms >= ?", min_bed) }
@@ -14,7 +13,32 @@ class Listing < ActiveRecord::Base
     params.each do |key, value|
       listings = listings.public_send(key, value)
     end
-    listings
+    convert_to_geojson_object(listings)
   end
 
+  private
+    def self.convert_to_geojson_object(listings)
+      geo_objects = []
+      listings.each do |listing|
+        feature = {}
+        feature['geometry'], feature['properties'] = {}, {}
+        get_coordinates(feature, listing)
+        get_properties(feature, listing)
+        geo_objects << feature
+      end
+      geo_objects
+    end
+
+    def self.get_coordinates(feature, listing)
+      feature['geometry']['coordinates'] = [listing.lat, listing.lng]
+    end
+
+    def self.get_properties(feature, listing)
+      feature['properties']['id'] = listing.id
+      feature['properties']['price'] = listing.price
+      feature['properties']['street'] = listing.street
+      feature['properties']['bedrooms'] = listing.bedrooms
+      feature['properties']['bathrooms'] = listing.bathrooms
+      feature['properties']['sq_ft'] = listing.sq_ft
+    end
 end
